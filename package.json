@@ -8,5 +8,8 @@
   "dependencies": {
     "aws-sdk": "^2.905.0",
     "dotenv": "^9.0.2"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
