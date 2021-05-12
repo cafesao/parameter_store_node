@@ -1,0 +1,12 @@
+{
+  "name": "parameter_store_node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cafesao/parameter_store_node.git",
+  "author": "<gabriel.dutra@ezops.com.br>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.905.0",
+    "dotenv": "^9.0.2"
+  }
+}
