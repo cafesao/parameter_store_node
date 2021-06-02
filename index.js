@@ -1,6 +1,9 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
 const fs = require('fs')
+const throttledQueue = require('throttled-queue')
+
+const wait = throttledQueue(3, 1000) // at most 3 requests per second.
 
 const SSM = new AWS.SSM()
 
@@ -21,12 +24,13 @@ function insertParameters(data) {
     const params = {
       Name: value,
       Value: data.values[index],
-      Overwrite: true,
       Type: 'String',
     }
-    SSM.putParameter(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
+    wait(() => {
+      SSM.putParameter(params, (err, data) => {
+        if (err) console.log(err.code)
+        else console.log(params.Name, data)
+      })
     })
   })
 }
