@@ -7,7 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.905.0",
-    "dotenv": "^9.0.2"
+    "dotenv": "^9.0.2",
+    "throttled-queue": "^1.0.7"
   },
   "scripts": {
     "start": "node index.js"
