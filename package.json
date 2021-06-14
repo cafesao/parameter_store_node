@@ -11,6 +11,7 @@
     "throttled-queue": "^1.0.7"
   },
   "scripts": {
-    "start": "node index.js"
+    "AddParameters": "node addParameters/index.js",
+    "GetAddParameters": "node getAddParameters/index.js"
   }
 }
