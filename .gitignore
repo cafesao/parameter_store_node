@@ -2,3 +2,4 @@ node_modules/
 yarn.lock
 Value.json
 .env
+Parameters.json
