@@ -11,13 +11,17 @@ const SSM = new AWS.SSM()
 
 console.log(`Profile: ${process.env.AWS_PROFILE}`)
 
-function insertParameterJSON(Name, Value) {
-  const parameter = `"${Name}": "${Value}",`
-  fs.appendFile('./getParameters/Value.json', parameter, (err) => {
-    if (err) {
-      throw err
-    }
-    console.log('Parameter + Value = saved.')
+function insertParameter(name, value) {
+  const params = {
+    Name: name,
+    Value: value,
+    Type: 'String',
+  }
+  wait(() => {
+    SSM.putParameter(params, (err, data) => {
+      if (err) console.log(err.code)
+      else console.log(params.Name, data)
+    })
   })
 }
 
@@ -30,16 +34,17 @@ function getParameter(data) {
       SSM.getParameter(params, (err, response) => {
         if (err) console.log(err.code)
         else {
-          console.log(`Name: ${value}`)
+          console.log(`NameOld: ${value}`)
+          console.log(`NameNew: ${data.values[index]}`)
           console.log(`Value: ${response.Parameter.Value}`)
-          insertParameterJSON(value, response.Parameter.Value)
+          insertParameter(data.values[index], response.Parameter.Value)
         }
       })
     })
   })
 }
 
-fs.readFile('./getParameters/Parameters.json', 'utf8', (err, data) => {
+fs.readFile('./getAddParameters/params.json', 'utf8', (err, data) => {
   if (err) console.error(err)
   const dataJson = KeyAndValue(JSON.parse(data))
   getParameter(dataJson)

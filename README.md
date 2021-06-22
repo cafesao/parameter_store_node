@@ -14,7 +14,7 @@ Vamos ver um passo a passo:
 - Edite o arquivo mudando os dois parâmetros:
   - AWS_PROFILE = Coloque o nome do profile da AWS que você usa na AWS CLI
   - AWS_REGION = Coloque a região da AWS
-- Perceba que existe o arquivo _Parameters.json_, vamos editar ele:
+- Perceba que existe o arquivo _params.json_, vamos editar ele:
   - Como você pode perceber nos exemplos do arquivo, é um JSON simples:
   - Basta colocar `{Nome do parâmetro:Valor do parâmetro}`
 - Por fim execute `node index.js` ou `yarn start`
