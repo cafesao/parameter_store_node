@@ -3,3 +3,4 @@ yarn.lock
 Value.json
 .env
 params.json
+*copy.json

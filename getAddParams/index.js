@@ -44,7 +44,7 @@ function getParameter(data) {
   })
 }
 
-fs.readFile('./getAddParameters/params.json', 'utf8', (err, data) => {
+fs.readFile('./getAddParams/params.json', 'utf8', (err, data) => {
   if (err) console.error(err)
   const dataJson = KeyAndValue(JSON.parse(data))
   getParameter(dataJson)

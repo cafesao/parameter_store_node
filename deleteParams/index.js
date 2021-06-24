@@ -28,7 +28,7 @@ function deleteParameter(data) {
   })
 }
 
-fs.readFile('./deleteParameters/params.json', 'utf8', (err, data) => {
+fs.readFile('./deleteParams/params.json', 'utf8', (err, data) => {
   if (err) console.error(err)
   const dataJson = KeyAndValue(JSON.parse(data))
   deleteParameter(dataJson)

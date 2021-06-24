@@ -3,44 +3,49 @@ const AWS = require('aws-sdk')
 const fs = require('fs')
 const throttledQueue = require('throttled-queue')
 
-const KeyAndValue = require('../helpers/KeyAndValue')
-
 const wait = throttledQueue(3, 1000) // at most 3 requests per second.
 
 const SSM = new AWS.SSM()
 
+const pathFile = './getParams/Value.json'
+
 console.log(`Profile: ${process.env.AWS_PROFILE}`)
 
-function insertParameterJSON(Name, Value) {
-  const parameter = `"${Name}": "${Value}",`
-  fs.appendFile('./getParameters/Value.json', parameter, (err) => {
+function insertParameterJSON(param) {
+  fs.appendFile(pathFile, param, (err) => {
     if (err) {
       throw err
     }
-    console.log('Parameter + Value = saved.')
+    console.log('Saved.')
   })
 }
 
-function getParameter(data) {
-  data.keys.map((value, index) => {
-    const params = {
-      Name: value,
-    }
-    wait(() => {
-      SSM.getParameter(params, (err, response) => {
-        if (err) console.log(err.code)
-        else {
-          console.log(`Name: ${value}`)
-          console.log(`Value: ${response.Parameter.Value}`)
-          insertParameterJSON(value, response.Parameter.Value)
-        }
-      })
+function deleteFile() {
+  fs.unlink(pathFile, () => {})
+}
+
+/*
+  TODO Maximum of results is 50, use Token (Look at documentation)
+  https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SSM.html#describeParameters-property
+*/
+function describeParams() {
+  SSM.describeParameters({ MaxResults: '50' }, (err, data) => {
+    data.Parameters.map((value) => getParams(value.Name))
+  })
+}
+
+function getParams(nameParam) {
+  wait(() => {
+    SSM.getParameter({ Name: nameParam }, (err, response) => {
+      if (err) console.log(err.code)
+      else {
+        console.log(`Name: ${nameParam}`)
+        console.log(`Value: ${response.Parameter.Value}`)
+        insertParameterJSON(`"${nameParam}": "${response.Parameter.Value}",`)
+      }
     })
   })
 }
 
-fs.readFile('./getParameters/params.json', 'utf8', (err, data) => {
-  if (err) console.error(err)
-  const dataJson = KeyAndValue(JSON.parse(data))
-  getParameter(dataJson)
-})
+deleteFile()
+describeParams()
