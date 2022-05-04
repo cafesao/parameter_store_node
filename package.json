@@ -6,9 +6,9 @@
   "author": "<gabriel.dutra@ezops.com.br>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.905.0",
-    "dotenv": "^9.0.2",
-    "throttled-queue": "^1.0.7"
+    "aws-sdk": "^2.1128.0",
+    "dotenv": "^16.0.0",
+    "throttled-queue": "^2.1.4"
   },
   "scripts": {
     "addParams": "node addParams/index.js",
